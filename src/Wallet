@@ -1,0 +1,47 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.6.12 <0.9.0;
+
+contract Wallet {
+    uint256 balance;
+    address private owner;
+    address[3] private allowedWithdrawers;
+    uint256 numAllowedWithdrawers=0;
+    
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier IsOwner() {
+        require(msg.sender == owner, "not owner");
+        _;
+    }
+   modifier IsOwnerOrAllowed() {
+        require(msg.sender == owner || isAllowed(msg.sender), "Not owner or allowed");
+        _;
+    }
+    function isAllowed(address _address) private view returns (bool) {
+        for (uint i = 0; i < allowedWithdrawers.length; i++) {
+            if (allowedWithdrawers[i] == _address) {
+                return true;
+            }
+        }
+        return false;
+    }   
+    
+    function addAllowedWithdrawers(address _address) public IsOwnerOrAllowed {
+        require(numAllowedWithdrawers < 3, "Maximum allowed withdrawers reached");
+        allowedWithdrawers[numAllowedWithdrawers] = _address;
+        numAllowedWithdrawers++;
+    }
+   receive() external  payable{   }
+       // balance = balance + amount;
+       
+    function withdraw(uint256 amount) public IsOwner {
+        require(amount <= address(this).balance, "Insufficient balance");
+        payable(owner).transfer(amount);
+    }
+
+    function getBalance() public view returns (uint256) {
+        return balance;
+    }
+}
