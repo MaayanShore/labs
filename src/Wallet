@@ -2,12 +2,11 @@
 pragma solidity >=0.6.12 <0.9.0;
 
 contract Wallet {
-    uint256 balance;
     address private owner;
     address[3] private allowedWithdrawers;
     uint256 numAllowedWithdrawers=0;
-    
-    constructor() {
+
+   constructor() {
         owner = msg.sender;
     }
 
@@ -16,32 +15,33 @@ contract Wallet {
         _;
     }
    modifier IsOwnerOrAllowed() {
-        require(msg.sender == owner || isAllowed(msg.sender), "Not owner or allowed");
+        require(msg.sender == owner || msg.sender==allowedWithdrawers[0] ||  msg.sender==allowedWithdrawers[1] || msg.sender==allowedWithdrawers[2] , "Not owner or allowed");
         _;
     }
-    function isAllowed(address _address) private view returns (bool) {
-        for (uint i = 0; i < allowedWithdrawers.length; i++) {
-            if (allowedWithdrawers[i] == _address) {
-                return true;
-            }
-        }
-        return false;
-    }   
-    
-    function addAllowedWithdrawers(address _address) public IsOwnerOrAllowed {
+
+    function addAllowedWithdrawers(address _address) public IsOwner {
         require(numAllowedWithdrawers < 3, "Maximum allowed withdrawers reached");
         allowedWithdrawers[numAllowedWithdrawers] = _address;
         numAllowedWithdrawers++;
     }
-   receive() external  payable{   }
-       // balance = balance + amount;
+   
+   function changeAllowedWithdrawers(address _address, address newAddress)public IsOwner{
+       if(_address==allowedWithdrawers[0])
+         allowedWithdrawers[0] = newAddress;
+        if(_address==allowedWithdrawers[1])
+         allowedWithdrawers[1] = newAddress;
+        if(_address==allowedWithdrawers[2])
+         allowedWithdrawers[2] = newAddress;
+   }
+   receive() external  payable 
+   {   }
        
-    function withdraw(uint256 amount) public IsOwner {
+    function withdraw(uint256 amount) public IsOwnerOrAllowed {
         require(amount <= address(this).balance, "Insufficient balance");
         payable(owner).transfer(amount);
     }
 
     function getBalance() public view returns (uint256) {
-        return balance;
+        return address(this).balance;
     }
 }
