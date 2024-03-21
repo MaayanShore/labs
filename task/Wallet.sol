@@ -3,7 +3,7 @@ pragma solidity >=0.6.12 <0.9.0;
 
 contract Wallet {
     address private owner;
-    address[3] private allowedWithdrawers;
+    mapping(address => uint256) allowedWithdrawers;
     uint256 numAllowedWithdrawers=0;
 
    constructor() {
@@ -15,23 +15,20 @@ contract Wallet {
         _;
     }
    modifier IsOwnerOrAllowed() {
-        require(msg.sender == owner || msg.sender==allowedWithdrawers[0] ||  msg.sender==allowedWithdrawers[1] || msg.sender==allowedWithdrawers[2] , "Not owner or allowed");
+        require(msg.sender == owner || allowedWithdrawers[msg.sender]>0 , "Not owner or allowed");
         _;
     }
 
     function addAllowedWithdrawers(address _address) public IsOwner {
         require(numAllowedWithdrawers < 3, "Maximum allowed withdrawers reached");
-        allowedWithdrawers[numAllowedWithdrawers] = _address;
+        allowedWithdrawers[_address] = numAllowedWithdrawers;
         numAllowedWithdrawers++;
     }
    
    function changeAllowedWithdrawers(address _address, address newAddress)public IsOwner{
-       if(_address==allowedWithdrawers[0])
-         allowedWithdrawers[0] = newAddress;
-        if(_address==allowedWithdrawers[1])
-         allowedWithdrawers[1] = newAddress;
-        if(_address==allowedWithdrawers[2])
-         allowedWithdrawers[2] = newAddress;
+        uint256 oldAmount = allowedWithdrawers[_address];
+        delete allowedWithdrawers[_address];
+        allowedWithdrawers[newAddress] = oldAmount;
    }
    receive() external  payable 
    {   }
