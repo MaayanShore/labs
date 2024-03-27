@@ -9,11 +9,12 @@ import "@hack/store/store.sol";
 contract SimpleStoreTest is Test {
     /// @dev Address of the SimpleStore contract.
     Store public s;
+    address internal owner;
 
     /// @dev Setup the testing environment.
     function setUp() public {
         s = new Store();
-        address my_add = address(s);
+
     }
 
     /// @dev Ensure that you can set and get the value.
