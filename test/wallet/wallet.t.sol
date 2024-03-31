@@ -55,7 +55,7 @@ contract WalletTest is Test {
     {  
        address newAddress= 0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C;
        wallet.addAllowedWithdrawers(newAddress);
-       assertEq(wallet.allowedWithdrawers(newAddress), 0);
+       assertEq(wallet.allowedWithdrawers(newAddress), 1);
     }
     
     function test_changeAllowedWithdrawers() public
@@ -64,26 +64,17 @@ contract WalletTest is Test {
         wallet.addAllowedWithdrawers(_address);
         address newAddress=0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd;
         wallet.changeAllowedWithdrawers(_address,newAddress);
-        assertEq(wallet.allowedWithdrawers(newAddress), 0);
+        assertEq(wallet.allowedWithdrawers(newAddress), 1);
     }
    
     function test_withdraw() public
     {
-       uint256 initialBalance = address(wallet).balance;
        uint256 amount = 5;
-       address _address=0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C; 
+       address _address=0x68BF2f4E4091C29dFa88B2c8bCBB65f00A63CE04; 
        wallet.addAllowedWithdrawers(_address);
-       vm.deal(_address, 3000);
-       //vm.startPrank(_address);
        payable(address(wallet)).transfer(300);
-       console.log(address(_address).balance);
-       console.log(initialBalance);
-       console.log(address(msg.sender).balance);
-       console.log(address(wallet));
-       console.log(address(msg.sender));
-       vm.expectRevert();
+       vm.prank(_address);
        wallet.withdraw(amount);
-       //console.log(address(wallet).balance);
     }
 
     function test_IsOwnerOrAllowed() public

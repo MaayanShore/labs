@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 contract Wallet {
     address private owner;
     mapping(address => uint256) public allowedWithdrawers;
-    uint256 numAllowedWithdrawers = 0;
+    uint256 numAllowedWithdrawers = 1;
 
     constructor() {
         owner = msg.sender;
@@ -18,12 +18,12 @@ contract Wallet {
     }
 
     modifier IsOwnerOrAllowed() {
-        require(msg.sender == owner || allowedWithdrawers[msg.sender] > 0, "Not owner or allowed");
+        require(msg.sender == owner || allowedWithdrawers[msg.sender] > 0 , "Not owner or allowed");
         _;
     }
 
     function addAllowedWithdrawers(address _address) public IsOwner {
-        require(numAllowedWithdrawers < 3, "Maximum allowed withdrawers reached");
+        require(numAllowedWithdrawers <= 3, "Maximum allowed withdrawers reached");
         allowedWithdrawers[_address] = numAllowedWithdrawers;
         numAllowedWithdrawers++;
     }
@@ -38,9 +38,6 @@ contract Wallet {
 
     function withdraw(uint256 amount) public IsOwnerOrAllowed {
         require(amount <= address(this).balance, "Insufficient balance!");
-        console.log(amount);
-        console.log(address(this).balance);
-        console.log(address(msg.sender).balance);
         payable(msg.sender).transfer(amount);
     }
 
