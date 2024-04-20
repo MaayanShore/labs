@@ -7,7 +7,6 @@ contract Wallet {
     address private owner;
     mapping(address => uint256) public allowedWithdrawers;
     uint256 numAllowedWithdrawers = 1;
-
     constructor() {
         owner = msg.sender;
     }
