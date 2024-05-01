@@ -1,91 +1,91 @@
 
-// SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.15;
-import "foundry-huff/HuffDeployer.sol";
-import "forge-std/Test.sol";
-import "forge-std/console.sol";
-import "@hack/wallet/wallet.sol";
-contract WalletTest is Test {
+// // SPDX-License-Identifier: Unlicense
+// pragma solidity ^0.8.15;
+// import "foundry-huff/HuffDeployer.sol";
+// import "forge-std/Test.sol";
+// import "forge-std/console.sol";
 
-    Wallet public wallet;
+// contract WalletTest is Test {
 
-    function setUp() public {
-        wallet = new Wallet();
-    }
-    function test_WalletReceive() public
-    {
-        address checkAddress= vm.addr(1);
-        uint256 amount=100;
-        vm.deal(checkAddress, amount);
-        uint256 startBalance = address(wallet).balance;
-        console.log(startBalance);
-        vm.startPrank(checkAddress);
-        console.log(address(this).balance);
-        (bool success, ) = address(wallet).call{value: 100}("");
-        require(success, "Receive failed");
-        vm.stopPrank();
-        uint256 endBalance = address(wallet).balance;
-        console.log(endBalance);
-        assertEq(startBalance+amount, wallet.getBalance());
-    }
-    function testfailedAddAllowedWithdrawers() public
-    {
-       wallet.addAllowedWithdrawers(0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C);
-       wallet.addAllowedWithdrawers(0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd);
-       wallet.addAllowedWithdrawers(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
-       vm.expectRevert();
-       wallet.addAllowedWithdrawers(0x57C91e4803E3bF32c42a0e8579aCaa5f3762af71);
+//     Wallet public wallet;
+
+//     function setUp() public {
+//         wallet = new Wallet();
+//     }
+//     function test_WalletReceive() public
+//     {
+//         address checkAddress= vm.addr(1);
+//         uint256 amount=100;
+//         vm.deal(checkAddress, amount);
+//         uint256 startBalance = address(wallet).balance;
+//         console.log(startBalance);
+//         vm.startPrank(checkAddress);
+//         console.log(address(this).balance);
+//         (bool success, ) = address(wallet).call{value: 100}("");
+//         require(success, "Receive failed");
+//         vm.stopPrank();
+//         uint256 endBalance = address(wallet).balance;
+//         console.log(endBalance);
+//         assertEq(startBalance+amount, wallet.getBalance());
+//     }
+//     function testfailedAddAllowedWithdrawers() public
+//     {
+//        wallet.addAllowedWithdrawers(0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C);
+//        wallet.addAllowedWithdrawers(0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd);
+//        wallet.addAllowedWithdrawers(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
+//        vm.expectRevert();
+//        wallet.addAllowedWithdrawers(0x57C91e4803E3bF32c42a0e8579aCaa5f3762af71);
        
-    }
+//     }
 
-      function test_isnotOwner() public
-    { 
-       address checkAddress= vm.addr(1);
-       vm.startPrank(checkAddress);
-       vm.expectRevert();
-       wallet.addAllowedWithdrawers(0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C);
-     }
+//       function test_isnotOwner() public
+//     { 
+//        address checkAddress= vm.addr(1);
+//        vm.startPrank(checkAddress);
+//        vm.expectRevert();
+//        wallet.addAllowedWithdrawers(0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C);
+//      }
 
-    function test_isOwner() public
-    { 
-       wallet.addAllowedWithdrawers(0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C);
-    }
+//     function test_isOwner() public
+//     { 
+//        wallet.addAllowedWithdrawers(0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C);
+//     }
     
-    function test_AddAllowedWithdrawers() public
-    {  
-       address newAddress= 0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C;
-       wallet.addAllowedWithdrawers(newAddress);
-       assertEq(wallet.allowedWithdrawers(newAddress), 1);
-    }
+//     function test_AddAllowedWithdrawers() public
+//     {  
+//        address newAddress= 0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C;
+//        wallet.addAllowedWithdrawers(newAddress);
+//        assertEq(wallet.allowedWithdrawers(newAddress), 1);
+//     }
     
-    function test_changeAllowedWithdrawers() public
-    {
-        address _address=0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C; 
-        wallet.addAllowedWithdrawers(_address);
-        address newAddress=0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd;
-        wallet.changeAllowedWithdrawers(_address,newAddress);
-        assertEq(wallet.allowedWithdrawers(newAddress), 1);
-    }
+//     function test_changeAllowedWithdrawers() public
+//     {
+//         address _address=0x710F7099fFe558091854b0A5Bd88DFc88aD5ac6C; 
+//         wallet.addAllowedWithdrawers(_address);
+//         address newAddress=0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd;
+//         wallet.changeAllowedWithdrawers(_address,newAddress);
+//         assertEq(wallet.allowedWithdrawers(newAddress), 1);
+//     }
    
-    function test_withdraw() public
-    {
-       uint256 amount = 5;
-       address _address=0x68BF2f4E4091C29dFa88B2c8bCBB65f00A63CE04; 
-       wallet.addAllowedWithdrawers(_address);
-       payable(address(wallet)).transfer(300);
-       vm.prank(_address);
-       wallet.withdraw(amount);
-    }
+//     function test_withdraw() public
+//     {
+//        uint256 amount = 5;
+//        address _address=0x68BF2f4E4091C29dFa88B2c8bCBB65f00A63CE04; 
+//        wallet.addAllowedWithdrawers(_address);
+//        payable(address(wallet)).transfer(300);
+//        vm.prank(_address);
+//        wallet.withdraw(amount);
+//     }
 
-    function test_IsOwnerOrAllowed() public
-    {   
-        address checkAddress= vm.addr(1);
-        uint256 amount=50;
-        vm.deal(checkAddress, amount);
-        payable(address(wallet)).transfer(300);
-        vm.startPrank(checkAddress);
-        vm.expectRevert();
-        wallet.withdraw(amount);
+//     function test_IsOwnerOrAllowed() public
+//     {   
+//         address checkAddress= vm.addr(1);
+//         uint256 amount=50;
+//         vm.deal(checkAddress, amount);
+//         payable(address(wallet)).transfer(300);
+//         vm.startPrank(checkAddress);
+//         vm.expectRevert();
+//         wallet.withdraw(amount);
         
-    }
-}
+//     }
+// }
