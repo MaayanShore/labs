@@ -19,6 +19,7 @@ ERC20 rewardsToken;
 
 function test_rate() public
  {
+  
     address a1= vm.addr(1);
     address a2= vm.addr(2);
     stakingToken.mint(a1, 50);
