@@ -12,7 +12,8 @@ contract StakingRewards {
     uint256 public finish   = 0;        // [sec] finish reward time
     uint256 public updated;             // [sec] last time rate updated
     uint256 public rate = 0;            // [per] reward rate per sec
-    uint256 public reward;              // reward per token stored
+    uint256 public reward;          
+        // reward per token stored
     uint256 public staked;              // total staked
     mapping(address => uint256) public paid;    // user reward per token paid
     mapping(address => uint256) public rewards; // reward to be claimed
@@ -93,5 +94,6 @@ contract StakingRewards {
         require(rate <= balance / duration, "provided reward too high");
         finish  = block.timestamp + duration;
         updated = block.timestamp;
+
     }
 }
