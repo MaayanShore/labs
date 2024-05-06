@@ -30,10 +30,10 @@ erc20 stakingToken;
 
 //   }
   
-  function test_updateRate() public
+ /*  function test_updateRate() public
  {
    
-   /* stakingRewards.updateRate(1000);
+   stakingRewards.updateRate(1000);
     address Shimon= vm.addr(5);
      vm.startPrank(Shimon);
     stakingRewards.stake(100);
@@ -41,10 +41,10 @@ erc20 stakingToken;
     console.log(address(Shimon).balance);
     stakingRewards.getReward();
     console.log(address(Shimon).balance);
-*/
+
   console.log(block.timestamp);
 
- }
+ }*/
 
 
  }
