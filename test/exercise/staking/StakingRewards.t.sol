@@ -1,21 +1,20 @@
-// SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.15;
-import "foundry-huff/HuffDeployer.sol";
-import "forge-std/Test.sol";
-import "forge-std/console.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "src/exercise/staking/StakingRewards.sol";
+/// SPDX-License-Identifier: Unlicense
+// pragma solidity ^0.8.15;
+// import "forge-std/Test.sol";
+// import "forge-std/console.sol";
 
-import "src/exercise/staking/erc20.sol";
-contract StakingRewardsTest is Test {
-StakingRewards public stakingRewards;
-erc20 stakingToken;
+// import "src/exercise/staking/StakingRewards.sol";
+
+// import "src/exercise/staking/erc20.sol";
+// contract StakingRewardsTest is Test {
+// StakingRewards public stakingRewards;
+// erc20 stakingToken;
 
 
- function setUp() public {
-      stakingToken=new erc20();
-      stakingRewards= new StakingRewards(address(stakingToken),address( stakingToken));
-}
+//  function setUp() public {
+//       stakingToken=new erc20();
+//       stakingRewards= new StakingRewards(address(stakingToken),address( stakingToken));
+// }
 
 // function test_rate() public
 //  {
@@ -44,7 +43,7 @@ erc20 stakingToken;
 
   console.log(block.timestamp);
 
- }*/
-
-
  }
+
+
+ }*/
