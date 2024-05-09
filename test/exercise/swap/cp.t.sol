@@ -1,20 +1,20 @@
-// SPDX-License-Identifier: Unlicense
-// pragma solidity ^0.8.15;
-// import "foundry-huff/HuffDeployer.sol";
-// import "forge-std/Test.sol";
-// import "forge-std/console.sol";
-// import "src/exercise/swap/cp.sol";
+//SPDX-License-Identifier: Unlicense
+pragma solidity ^0.8.15;
+import "foundry-huff/HuffDeployer.sol";
+import "forge-std/Test.sol";
+import "forge-std/console.sol";
+import "src/exercise/swap/cp.sol";
 
-// import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-// contract CpTest is Test {
-// CP public cp;
-// ERC20 tokenA;
-// ERC20 tokenB;
+import "@openzeppelin/ERC20/IERC20.sol";
+contract CpTest is Test {
+CP public cp;
+IERC20 tokenA;
+IERC20 tokenB;
 
-//  function setUp() public {
+ function setUp() public {
      
-//     cp=new CP(address(tokenA),address(tokenB));
-// }
+    cp=new CP(address(tokenA),address(tokenB));
+}
 
 // function test_swap() public
 //  {
@@ -35,4 +35,4 @@
 //     cp.addLiquidity(1, 2); 
 //     console.log(cp.swap(address(tokenA), 5));
 //  }
-//}
+}

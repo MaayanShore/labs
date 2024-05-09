@@ -1,35 +1,36 @@
-/// SPDX-License-Identifier: Unlicense
-// pragma solidity ^0.8.15;
-// import "forge-std/Test.sol";
-// import "forge-std/console.sol";
+// SPDX-License-Identifier: Unlicense
+pragma solidity ^0.8.15;
+import "forge-std/Test.sol";
+import "forge-std/console.sol";
 
-// import "src/exercise/staking/StakingRewards.sol";
+import "src/exercise/staking/StakingRewards.sol";
 
-// import "src/exercise/staking/erc20.sol";
-// contract StakingRewardsTest is Test {
-// StakingRewards public stakingRewards;
-// erc20 stakingToken;
+import "src/exercise/staking/erc20.sol";
+
+contract StakingRewardsTest is Test {
+StakingRewards public stakingRewards;
+erc20 stakingToken;
 
 
-//  function setUp() public {
-//       stakingToken=new erc20();
-//       stakingRewards= new StakingRewards(address(stakingToken),address( stakingToken));
-// }
+ function setUp() public {
+      stakingToken=new erc20();
+      stakingRewards= new StakingRewards(address(stakingToken),address( stakingToken));
+}
 
-// function test_rate() public
-//  {
+function test_rate() public
+ {
 
-//     address a1= vm.addr(1);
-//     address a2= vm.addr(2);
-//     stakingToken.mint(a1, 50);
-//     stakingToken.mint(a2, 100);
-//     // console.log(stakingRewards.rate);
-//     stakingRewards.updateRate(20);
-//     // console.log(stakingRewards.rate);
+    address a1= vm.addr(1);
+    address a2= vm.addr(2);
+    stakingToken.mint(a1, 50);
+    stakingToken.mint(a2, 100);
+    // console.log(stakingRewards.rate);
+    stakingRewards.updateRate(20);
+    // console.log(stakingRewards.rate);
 
-//   }
+  }
   
- /*  function test_updateRate() public
+  function test_updateRate() public
  {
    
    stakingRewards.updateRate(1000);
@@ -46,4 +47,4 @@
  }
 
 
- }*/
+ }
