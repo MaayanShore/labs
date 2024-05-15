@@ -29,10 +29,10 @@
 //     // console.log(stakingRewards.rate);
 
 //   }
-  
+
 //   function test_updateRate() public
 //  {
-   
+
 //    stakingRewards.updateRate(1000);
 //     address Shimon= vm.addr(5);
 //      vm.startPrank(a1);
@@ -45,6 +45,5 @@
 //   console.log(block.timestamp);
 
 //  }
-
 
 //  }

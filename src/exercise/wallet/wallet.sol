@@ -7,6 +7,7 @@ contract Wallet {
     address private owner;
     mapping(address => uint256) public allowedWithdrawers;
     uint256 numAllowedWithdrawers = 1;
+
     constructor() {
         owner = msg.sender;
     }
@@ -17,7 +18,7 @@ contract Wallet {
     }
 
     modifier IsOwnerOrAllowed() {
-        require(msg.sender == owner || allowedWithdrawers[msg.sender] > 0 , "Not owner or allowed");
+        require(msg.sender == owner || allowedWithdrawers[msg.sender] > 0, "Not owner or allowed");
         _;
     }
 

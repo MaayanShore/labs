@@ -14,7 +14,6 @@ contract SimpleStoreTest is Test {
     /// @dev Setup the testing environment.
     function setUp() public {
         s = new Store();
-
     }
 
     /// @dev Ensure that you can set and get the value.
