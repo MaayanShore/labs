@@ -30,7 +30,7 @@ contract EnglishAuctionTest is Test {
         assertEq(nft.ownerOf(tokenId), a1, "NFT was not minted successfully");
         englishAuction.startsAuction(7, 10, 1, address(nft));
         assertEq(nft.ownerOf(tokenId), address(englishAuction), "NFT was not transfred successfully");
-
+    }
 
     function test_ownerNft() public {
         uint256 tokenId = 1;
