@@ -13,6 +13,7 @@ remappings = [
     "@hack/=src/",
     "solmate/=lib/solmate/src/",
     "@openzeppelin/=lib/openzeppelin-contracts/contracts/token/",
+    "@chainlink/=lib/chainlink/",
 ]
 fs_permissions = [
     { access = "read", path = "./test/erc721/wrapper.huff" }

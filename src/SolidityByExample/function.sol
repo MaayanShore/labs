@@ -2,47 +2,47 @@
 pragma solidity 0.8.19;
 contract Function{
 
-// function a() public pure returns(uint ,uint , uint ){
+function a() public pure returns(uint ,uint , uint ){
 
-// return(1,2,3);
-// }
-// function b() public pure returns(uint x,uint d, uint c){
-// return(1,2,3);
-// }
-// function c()public pure returns(uint x,uint b, uint c){
-// x=1;
-// b=2;
-// c=3;
-// }
+return(1,2,3);
+}
+function b() public pure returns(uint x,uint y, uint z){
+return(1,2,3);
+}
+function c()public pure returns(uint t,uint u, uint v){
+t=1;
+u=2;
+v=3;
+}
 
-// function d(uint[] memory arr)public pure{}
+function d(uint[] memory arr)public pure{}
 
-// uint[] arr;
-// function e() public pure returns(uint[] memory){
-//     return arr;
-// }
+uint[] arr2;
+function e() public view returns(uint[] memory){
+    return arr2;
+}
 
-// function f() public pure returns(uint,uint,uint){
-//   (uint x,uint y,uint z)= c();
+function f() public pure returns(uint,uint,uint){
+  (uint l,uint n,uint p)= c();
 
-//   //(uint s,uint g)= (1,2,3);
-//   return (x,y,z);
-// }
+  //(uint s,uint g)= (1,2,3);
+  return (l,n,p);
+}
 
-// function g(
-//     uint c,
-//     bool a,
-//     address b
-// ) public pure {}
+function g(
+    uint j,
+    bool w,
+    address m
+) public pure {}
 
-// function h() public{
-// g(1,false,address(this));
+function h() public view{
+g(1,false,address(this));
 
-// }
+}
 
-// function i() public{
-//     g({ a:true,
-//         b:address(this),
-//         c:6});
-// }
+function i() public view{
+    g({ w:true,
+        m:address(this),
+        j:6});
+}
 }

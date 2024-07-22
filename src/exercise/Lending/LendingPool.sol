@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.7;
 
-import "openzeppelin/contracts/access/Ownable.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/ERC20/IERC20.sol";
 import "@openzeppelin/ERC721/IERC721.sol";
 import "forge-std/console.sol";
@@ -46,7 +46,7 @@ contract BondToken is  Ownable, Math {
     mapping(address => uint256) private usersCollateral;
     mapping(address => uint256) private usersBorrowed;
 
-    constructor()  {bDAI=new ERC20Burnable("Bond DAI", "bDAI");}
+    constructor()Ownable(msg.sender)  {bDAI=new ERC20Burnable("Bond DAI", "bDAI");}
 
     function bondAsset(uint256 _amount) external {
         dai.transferFrom(msg.sender, address(this), _amount);
@@ -90,7 +90,7 @@ contract BondToken is  Ownable, Math {
         require(_amount <= _borrowLimit(), "No collateral enough");
         usersBorrowed[msg.sender] += _amount;
         totalBorrowed += _amount;
-        AaveLibrary._withdrawDaiFromAave(_amount);
+        AaveLibrary._withdrawDaiFromAave(_amount,msg.sender);
     }
 
     function repay(uint256 _amount) external {
@@ -120,7 +120,7 @@ contract BondToken is  Ownable, Math {
         uint256 borrowed = usersBorrowed[_user];
         uint256 collateralToUsd = mulExp(wethPrice, collateral);
         if (borrowed > percentage(collateralToUsd, maxLTV)) {
-            AaveLibrary._withdrawWethFromAave(collateral);
+            AaveLibrary._withdrawWethFromAave(collateral,msg.sender);
             uint256 amountDai = _convertEthToDai(collateral);
             totalReserve += amountDai;
             usersBorrowed[_user] = 0;
@@ -130,13 +130,13 @@ contract BondToken is  Ownable, Math {
     }
 
     function getExchangeRate() public view returns (uint256) {
-        if (totalSupply() == 0) {
+        if (bDAI.totalSupply() == 0) {
             return 1000000000000000000;
         }
         // uint256 cash = getCash();
        // uint256 num = cash.add(totalBorrowed).add(totalReserve);
-        num = totalDeposit.add(totalReserve);
-        return getExp(num, totalSupply());
+        uint num = totalDeposit.add(totalReserve);
+        return getExp(num, bDAI.totalSupply());
     }
 
     // function getCash() public view returns (uint256) {
@@ -144,10 +144,10 @@ contract BondToken is  Ownable, Math {
     // }
 
     function harvestRewards() external onlyOwner {
-        uint256 aWethBalance = aWeth.balanceOf(address(this));
+        uint256 aWethBalance = weth.balanceOf(address(this));
         if (aWethBalance > totalCollateral) {
             uint256 rewards = aWethBalance.sub(totalCollateral);
-            AaveLibrary._withdrawWethFromAave(rewards);
+            AaveLibrary._withdrawWethFromAave(rewards,address(this));
             ethTreasury += rewards;
         }
     }
